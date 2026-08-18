@@ -1,5 +1,6 @@
 import Banner from "../Banner/Banner";
 import Brands from "./Brands/Brands";
+import OurQuality from "./OurQuality/OurQuality";
 import Services from "./Services/Services";
 import Works from "./Works/Works";
 
@@ -13,6 +14,8 @@ const Home = () => {
       <Services />
 
       <Brands />
+
+      <OurQuality />
     </div>
   );
 };
