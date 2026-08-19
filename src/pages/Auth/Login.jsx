@@ -7,12 +7,12 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleSubmitForm = (data) => {
+  const handleLogin = (data) => {
     console.log(data);
   };
   return (
     <div>
-      <form onSubmit={handleSubmit(handleSubmitForm)}>
+      <form onSubmit={handleSubmit(handleLogin)}>
         <fieldset className="fieldset">
           <label className="label">Email</label>
           <input

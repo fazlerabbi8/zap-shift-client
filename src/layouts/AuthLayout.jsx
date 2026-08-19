@@ -2,21 +2,35 @@ import Logo from "../Components/Logo/Logo";
 import { Outlet } from "react-router";
 
 import authImg from "../assets/authImage.png";
+
 const AuthLayout = () => {
   return (
-    <div className="container mx-auto p-6 space-y-5">
-      <div className="flex justify-between items-center">
-        <Logo></Logo>
-      </div>
-      <div className="flex items-center justify-center w-5xl mx-auto">
-        <div className="flex-1">
-          <Outlet></Outlet>
-        </div>
+    <div className="min-h-screen px-4 py-5 sm:px-6 lg:px-8">
+      {/* Header */}
+      <header className="flex max-w-7xl">
+        <Logo />
+      </header>
 
-        <div className="flex-1">
-          <img src={authImg} alt="" />
+      {/* Main Content */}
+      <main className="mx-auto flex min-h-[calc(100vh-100px)] max-w-5xl items-center justify-center">
+        <div className="flex w-full flex-col-reverse items-center gap-8 lg:flex-row lg:gap-12">
+          
+          {/* Auth Form */}
+          <div className="w-full flex-1">
+            <Outlet />
+          </div>
+
+          {/* Image */}
+          <div className="flex w-full flex-1 justify-center">
+            <img
+              src={authImg}
+              alt="Authentication"
+              className="w-full max-w-md object-contain"
+            />
+          </div>
+
         </div>
-      </div>
+      </main>
     </div>
   );
 };
