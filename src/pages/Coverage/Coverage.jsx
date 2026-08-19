@@ -25,7 +25,7 @@ const Coverage = () => {
   return (
     <div>
       <div>
-        <h3 className="text-3xl font-semibold mb-5">Our Services 64 Areas</h3>
+        <h3 className="text-3xl font-semibold mb-5">Our Services in 64 Area</h3>
       </div>
       {/* search area */}
       <div className="mb-5">
