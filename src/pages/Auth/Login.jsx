@@ -22,16 +22,35 @@ const Login = () => {
             placeholder="Email"
           />
 
-          {errors?.email?.type === "required" && <p className="text-red-500">This field is required.</p>}
+          {errors?.email?.type === "required" && (
+            <p className="text-red-500">This field is required.</p>
+          )}
 
           <label className="label">Password</label>
           <input
             type="password"
-            {...register("password", { required: true, minLength: 6 })}
+            {...register("password", {
+              required: true,
+              minLength: 6,
+              pattern:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+            })}
             className="input w-full"
             placeholder="Password"
           />
-          {errors?.password?.type === "required" && <p className="text-red-500">This field is required.</p>}
+          {errors?.password?.type === "required" && (
+            <p className="text-red-500">This field is required.</p>
+          )}
+          {errors?.password?.type === "minLength" && (
+            <p className="text-red-500">Password must have 6 character.</p>
+          )}
+          {errors?.password?.type === "pattern" && (
+            <p className="text-red-500">
+              Password must be at least 8 characters long and include at least
+              one uppercase letter, one lowercase letter, one number, and one
+              special character.
+            </p>
+          )}
 
           <div>
             <a className="link link-hover">Forgot password?</a>
