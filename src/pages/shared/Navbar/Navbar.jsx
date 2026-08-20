@@ -1,7 +1,20 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import Logo from "../../../Components/Logo/Logo";
+import useAuth from "../../../Hooks/useAuth";
+import auth from "../../../firebase/firebase.init";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const {user, logout} = useAuth();
+  const handleLogout = () => {
+    logout(auth)
+    .then(() =>{
+      toast.success("User Logout Successfully!")
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
+  }
   const links = (
     <>
       <li>
@@ -47,9 +60,13 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+    {
+      user ? <Link onClick={handleLogout} className="btn">Logout</Link> :
+      <Link to={"/login"}>Login</Link>
+    }
   </div>
 </div>
+
   );
 };
 

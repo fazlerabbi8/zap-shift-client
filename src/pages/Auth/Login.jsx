@@ -1,6 +1,11 @@
 import { useForm } from "react-hook-form";
+import useAuth from "../../Hooks/useAuth";
+import { Link, useNavigate } from "react-router";
+import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
+  const { loginUser } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -9,6 +14,15 @@ const Login = () => {
 
   const handleLogin = (data) => {
     console.log(data);
+
+    loginUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
   return (
     <div>
@@ -57,7 +71,17 @@ const Login = () => {
           </div>
           <button className="btn btn-neutral mt-4">Login</button>
         </fieldset>
+        <p>
+          Don't have any account please{" "}
+          <Link className="text-blue-600 underline" to={"/register"}>
+            Register
+          </Link>
+        </p>
       </form>
+      <h3 className="mt-4 text-center font-bold">OR</h3>
+      <div className="text-center mt-3">
+        <GoogleLogin></GoogleLogin>
+      </div>
     </div>
   );
 };

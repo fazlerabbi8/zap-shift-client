@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
+import { Link } from "react-router";
+import GoogleLogin from "./GoogleLogin";
 
 const Register = () => {
   const {registerUser} = useAuth();
@@ -64,7 +66,12 @@ const Register = () => {
           )}
           <button className="btn btn-neutral mt-4">Register</button>
         </fieldset>
+        <p>Already have an account please <Link className="text-blue-600 underline"  to={"/login"}>Login</Link></p>
       </form>
+      <h3 className="mt-4 text-center font-bold">OR</h3>
+      <div className="text-center mt-3">
+        <GoogleLogin></GoogleLogin>
+      </div>
     </div>
   );
 };
