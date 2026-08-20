@@ -64,7 +64,7 @@ const Register = () => {
               special character.
             </p>
           )}
-          <button className="btn btn-neutral mt-4">Register</button>
+          <button className="btn btn-primary text-black mt-4">Register</button>
         </fieldset>
         <p>Already have an account please <Link className="text-blue-600 underline"  to={"/login"}>Login</Link></p>
       </form>
