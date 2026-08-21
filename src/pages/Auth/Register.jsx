@@ -5,7 +5,7 @@ import GoogleLogin from "./GoogleLogin";
 import axios from "axios";
 
 const Register = () => {
-  const { registerUser } = useAuth();
+  const { registerUser,updateUserProfile} = useAuth();
 
   const {
     register,
@@ -13,63 +13,57 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegister = async (data) => {
-    try {
-      console.log("Form data:", data);
+const handleRegister = async (data) => {
+  try {
+    // 1. Get selected image
+    const image = data.photo[0];
 
-      // 1. Get selected image
-      const image = data.photo[0];
+    // 2. Upload image to Cloudinary
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
 
-      // 2. Create FormData for Cloudinary
-      const formData = new FormData();
+    const imageAPI = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
 
-      formData.append("file", image);
+    const imageResponse = await axios.post(imageAPI, formData);
 
-      formData.append(
-        "upload_preset",
-        import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
-      );
+    // 3. Get Cloudinary URL
+    const imageUrl = imageResponse.data.secure_url;
 
-      // 3. Cloudinary upload API
-      const imageAPI = `https://api.cloudinary.com/v1_1/${
-        import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-      }/image/upload`;
+    console.log("Image URL:", imageUrl);
 
-      // 4. Upload image to Cloudinary
-      const imageResponse = await axios.post(imageAPI, formData);
+    // 4. Create Firebase user
+    const result = await registerUser(data.email, data.password);
 
-      console.log("Cloudinary response:", imageResponse.data);
 
-      // 5. Get image URL
-      const imageUrl = imageResponse.data.secure_url;
+    await updateUserProfile({
+      displayName: data.name,
+      photoURL: imageUrl,
+    });
 
-      console.log("Image URL:", imageUrl);
+    console.log("Registration successful");
+    console.log("Firebase user:", result.user);
+    console.log("Firebase photo:", result.user.photoURL);
 
-      // 6. Create Firebase user
-      const result = await registerUser(data.email, data.password);
+    // 6. Data for your backend
+    const userInfo = {
+      name: data.name,
+      email: data.email,
+      photoURL: imageUrl,
+    };
 
-      console.log("Firebase user:", result.user);
-      console.log("Registration successful");
+    console.log("User info:", userInfo);
 
-      // 7. User information
-      const userInfo = {
-        name: data.name,
-        email: data.email,
-        photoURL: imageUrl,
-      };
-
-      console.log("User info:", userInfo);
-
-      // Later:
-      // send userInfo to your Express/MongoDB backend
-
-    } catch (error) {
-      console.log(
-        "Registration error:",
-        error.response?.data || error.message
-      );
-    }
-  };
+  } catch (error) {
+    console.log(
+      "Registration error:",
+      error.response?.data || error.message
+    );
+  }
+};
 
   return (
     <div>
