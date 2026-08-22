@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import GoogleLogin from "./GoogleLogin";
 import axios from "axios";
 
 const Register = () => {
-  const { registerUser,updateUserProfile} = useAuth();
+  const { registerUser, updateUserProfile } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -13,57 +15,57 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-const handleRegister = async (data) => {
-  try {
-    // 1. Get selected image
-    const image = data.photo[0];
+  const handleRegister = async (data) => {
+    try {
+      // 1. Get selected image
+      const image = data.photo[0];
 
-    // 2. Upload image to Cloudinary
-    const formData = new FormData();
-    formData.append("file", image);
-    formData.append(
-      "upload_preset",
-      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
-    );
+      // 2. Upload image to Cloudinary
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append(
+        "upload_preset",
+        import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+      );
 
-    const imageAPI = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
+      const imageAPI = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
 
-    const imageResponse = await axios.post(imageAPI, formData);
+      const imageResponse = await axios.post(imageAPI, formData);
 
-    // 3. Get Cloudinary URL
-    const imageUrl = imageResponse.data.secure_url;
+      // 3. Get Cloudinary URL
+      const imageUrl = imageResponse.data.secure_url;
 
-    console.log("Image URL:", imageUrl);
+      console.log("Image URL:", imageUrl);
 
-    // 4. Create Firebase user
-    const result = await registerUser(data.email, data.password);
+      // 4. Create Firebase user
+      const result = await registerUser(data.email, data.password);
 
+      await updateUserProfile({
+        displayName: data.name,
+        photoURL: imageUrl,
+      });
 
-    await updateUserProfile({
-      displayName: data.name,
-      photoURL: imageUrl,
-    });
+      navigate(location?.state || "/");
 
-    console.log("Registration successful");
-    console.log("Firebase user:", result.user);
-    console.log("Firebase photo:", result.user.photoURL);
+      console.log("Name after update:", result.user.displayName);
+      console.log("Photo after update:", result.user.photoURL);
 
-    // 6. Data for your backend
-    const userInfo = {
-      name: data.name,
-      email: data.email,
-      photoURL: imageUrl,
-    };
+      // console.log("Registration successful");
+      // console.log("Firebase user:", result.user);
+      // console.log("Firebase photo:", result.user.photoURL);
 
-    console.log("User info:", userInfo);
+      // 6. Data for your backend
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        photoURL: imageUrl,
+      };
 
-  } catch (error) {
-    console.log(
-      "Registration error:",
-      error.response?.data || error.message
-    );
-  }
-};
+      console.log("User info:", userInfo);
+    } catch (error) {
+      console.log("Registration error:", error.response?.data || error.message);
+    }
+  };
 
   return (
     <div>
@@ -127,26 +129,23 @@ const handleRegister = async (data) => {
           )}
 
           {errors?.password?.type === "minLength" && (
-            <p className="text-red-500">
-              Password must have 6 characters.
-            </p>
+            <p className="text-red-500">Password must have 6 characters.</p>
           )}
 
           {errors?.password?.type === "pattern" && (
             <p className="text-red-500">
-              Password must include uppercase, lowercase, number and
-              special character.
+              Password must include uppercase, lowercase, number and special
+              character.
             </p>
           )}
 
-          <button className="btn btn-primary text-black mt-4">
-            Register
-          </button>
+          <button className="btn btn-primary text-black mt-4">Register</button>
         </fieldset>
 
         <p>
           Already have an account?{" "}
-          <Link className="text-blue-600 underline" to="/login">
+          <Link state={location?.state}
+          className="text-blue-600 underline" to="/login">
             Login
           </Link>
         </p>
