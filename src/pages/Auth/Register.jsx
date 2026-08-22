@@ -47,9 +47,6 @@ const Register = () => {
 
       navigate(location?.state || "/");
 
-      console.log("Name after update:", result.user.displayName);
-      console.log("Photo after update:", result.user.photoURL);
-
       // console.log("Registration successful");
       // console.log("Firebase user:", result.user);
       // console.log("Firebase photo:", result.user.photoURL);
@@ -144,8 +141,11 @@ const Register = () => {
 
         <p>
           Already have an account?{" "}
-          <Link state={location?.state}
-          className="text-blue-600 underline" to="/login">
+          <Link
+            state={location?.state}
+            className="text-blue-600 underline"
+            to="/login"
+          >
             Login
           </Link>
         </p>

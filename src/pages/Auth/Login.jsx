@@ -2,14 +2,17 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import GoogleLogin from "./GoogleLogin";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { loginUser } = useAuth();
+  const { loginUser, forgetPassword } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -23,6 +26,24 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err.message);
+      });
+  };
+
+  const handleForgetPassword = () => {
+    const email = getValues("email");
+    console.log("Sending reset to:", email);
+    
+    if (!email) {
+      toast.error("Please enter your email first.");
+      return;
+    }
+
+    forgetPassword(email)
+      .then(() => {
+        toast.success("Password reset email sent!");
+      })
+      .catch((err) => {
+        toast.error(err.message);
       });
   };
   return (
@@ -67,17 +88,24 @@ const Login = () => {
             </p>
           )}
 
-          <div>
-            <a className="link link-hover">Forgot password?</a>
+          <div className="text-start">
+            <button
+              type="button"
+              onClick={handleForgetPassword}
+              className="link link-hover "
+            >
+              Forgot password?
+            </button>
           </div>
-          <button className="btn btn-primary text-black mt-4">
-            Login
-          </button>
+          <button className="btn btn-primary text-black mt-4">Login</button>
         </fieldset>
         <p>
           Don't have any account please{" "}
-          <Link state={location?.state}
-          className="text-blue-600 underline" to={"/register"}>
+          <Link
+            state={location?.state}
+            className="text-blue-600 underline"
+            to={"/register"}
+          >
             Register
           </Link>
         </p>
