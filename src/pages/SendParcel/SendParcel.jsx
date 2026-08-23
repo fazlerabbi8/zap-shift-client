@@ -14,7 +14,7 @@ const SendParcel = () => {
   const regions = [...new Set(regionsDuplicate)];
 
   const senderRegion = useWatch({ control, name: "senderRegion" });
-  const receiverRegion = useWatch({control, name: "reciverRegion"})
+  const receiverRegion = useWatch({ control, name: "receiverRegion" });
 
   const districtsOfRegion = (region) => {
     const regionDistricts = servicesCenters.filter((c) => c.region === region);
@@ -192,7 +192,7 @@ const SendParcel = () => {
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Pick a Region</legend>
                 <select
-                  {...register("reciverRegion")}
+                  {...register("receiverRegion")}
                   defaultValue="Pick a Region"
                   className="select w-full"
                 >
@@ -208,7 +208,7 @@ const SendParcel = () => {
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Pick a District</legend>
                 <select
-                  {...register("reciverDistrict")}
+                  {...register("receiverDistrict")}
                   defaultValue="Pick a District"
                   className="select w-full"
                 >
