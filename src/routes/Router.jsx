@@ -6,50 +6,55 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Rider from "../pages/Rider/Rider";
-import PrivateRoute from "../PrivateRoute/PrivateRoute"
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 const router = createBrowserRouter([
-    {
-        path: "/",
-        Component: MainLayout,
-        children: [
-            {
-                index: true,
-                Component: Home
-            },
-            {
-                path: 'coverage',
-                Component: Coverage,
-                loader: () => fetch('serviceCenter.json').then(res => res.json())
-            },
-            {
-                path: 'send-parcel',
-                element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>
-            },
-            {
-                path: 'rider',
-                element: (
-                    <PrivateRoute>
-                        <Rider />
-                    </PrivateRoute>
-                )
-            },
-        ]
-    },
-    {
-        path: "/",
-        Component: AuthLayout,
-        children: [
-            {
-                path: "login",
-                Component: Login
-            },
-            {
-                path: "register",
-                Component: Register
-            },
-        ]
-    }
+  {
+    path: "/",
+    Component: MainLayout,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "coverage",
+        Component: Coverage,
+        loader: () => fetch("serviceCenter.json").then((res) => res.json()),
+      },
+      {
+        path: "send-parcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("serviceCenter.json").then((res) => res.json()),
+      },
+      {
+        path: "rider",
+        element: (
+          <PrivateRoute>
+            <Rider />
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/",
+    Component: AuthLayout,
+    children: [
+      {
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "register",
+        Component: Register,
+      },
+    ],
+  },
 ]);
 
 export default router;
