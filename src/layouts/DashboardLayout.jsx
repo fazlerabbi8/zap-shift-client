@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router";
+import { CiDeliveryTruck } from "react-icons/ci";
 
 const DashboardLayout = () => {
   return (
@@ -32,7 +33,7 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <div className="px-4">Navbar Title</div>
+          <div className="px-4 text-2xl font-semibold text-primary">Zap Shift Dashboard</div>
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
@@ -49,7 +50,8 @@ const DashboardLayout = () => {
           <ul className="menu w-full grow">
             {/* List item */}
             <li>
-              <Link to={'/'}
+              <Link
+                to={"/"}
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
@@ -74,9 +76,14 @@ const DashboardLayout = () => {
             {/* our dashboard links */}
 
             <li>
-
-                <NavLink to={'/dashboard/my-parcels'}>My Parcels</NavLink>
-
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="my parcels"
+                to={"/dashboard/my-parcels"}
+              >
+                <CiDeliveryTruck />
+                <span className="is-drawer-close:hidden"> My Parcels</span>
+              </NavLink>
             </li>
 
             {/* List item */}
