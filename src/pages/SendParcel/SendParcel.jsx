@@ -74,11 +74,11 @@ const SendParcel = () => {
             );
           });
 
-      // Swal.fire({
-      //   title: "Deleted!",
-      //   text: "Your file has been deleted.",
-      //   icon: "success",
-      // });
+      Swal.fire({
+        title: "Confirmed",
+        text: "Your parcel added successfully",
+        icon: "success",
+      });
     });
   };
 
