@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { CiEdit } from "react-icons/ci";
+import { FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const MyParcels = () => {
   const { user } = useAuth();
@@ -13,6 +17,29 @@ const MyParcels = () => {
       return res.data;
     },
   });
+
+  const handleParcelDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed)
+        axiosSecure.delete(`/parcels/${id}`).then((res) => {
+          if (res.data.deletedCount) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your parcel has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+    });
+  };
   return (
     <div>
       <h3>All of my parcels: {parcels.length}</h3>
@@ -37,9 +64,19 @@ const MyParcels = () => {
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
                 <td>Blue</td>
-                <td>
-
-                    
+                <td className="space-x-2">
+                  <button className="btn btn-square">
+                    <FaMagnifyingGlass />
+                  </button>
+                  <button className="btn btn-square">
+                    <CiEdit />
+                  </button>
+                  <button
+                    onClick={() => handleParcelDelete(parcel._id)}
+                    className="btn btn-square"
+                  >
+                    <FaTrashAlt />
+                  </button>
                 </td>
               </tr>
             ))}
