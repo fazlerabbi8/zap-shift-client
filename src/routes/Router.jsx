@@ -9,9 +9,10 @@ import Rider from "../pages/Rider/Rider";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { Component } from "react";
 import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 import Payment from "../pages/Dashboard/Payment/Payment";
+import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         path: 'payment/:parcelId',
         Component: Payment
       },
+      {
+        path: 'payment-success',
+        Component: PaymentSuccess
+      },
+      {
+        path: 'payment-canceled',
+        Component: PaymentCancel
+      }
     ],
   },
 ]);

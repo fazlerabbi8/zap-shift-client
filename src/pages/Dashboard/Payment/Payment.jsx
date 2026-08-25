@@ -1,16 +1,20 @@
 import { useParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const Payment = () => {
   const { parcelId } = useParams();
   const axiosSecure = useAxiosSecure();
 
-  const { isLoading, data: parcel } = useQuery({
+  const {
+    isLoading,
+    isError,
+    data: parcel,
+  } = useQuery({
     queryKey: ["parcels", parcelId],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels/${parcelId}`);
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     },
   });
@@ -18,10 +22,30 @@ const Payment = () => {
   if (isLoading) {
     return <span className="loading loading-spinner text-neutral"></span>;
   }
+  if (isError || !parcel) return <p className="text-center mt-10 text-red-600">Failed to load parcel.</p>;
+
+  const handlePayment = async () => {
+    const paymentInfo = {
+      cost: parcel.cost,
+      parcelId: parcel._id,
+      senderEmail: parcel.senderEmail,
+      parcelName: parcel.parcelName,
+    };
+
+    const res = await axiosSecure.post(`/create-checkout-session`, paymentInfo);
+    if (res.data?.url) {
+      window.location.href = res.data.url;
+    }
+  };
 
   return (
     <div>
-        <h3>Please Pay: {parcel.parcelName}</h3>
+      <h3>
+        Please Pay {parcel.cost} for: {parcel.parcelName}
+      </h3>
+      <button onClick={handlePayment} className="btn btn-warning">
+        Pay
+      </button>
     </div>
   );
 };
