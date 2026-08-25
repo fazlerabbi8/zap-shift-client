@@ -10,7 +10,7 @@ const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["myParcels", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user.email}`);
@@ -31,6 +31,9 @@ const MyParcels = () => {
       if (result.isConfirmed)
         axiosSecure.delete(`/parcels/${id}`).then((res) => {
           if (res.data.deletedCount) {
+
+            refetch();
+
             Swal.fire({
               title: "Deleted!",
               text: "Your parcel has been deleted.",
