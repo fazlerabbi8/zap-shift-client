@@ -39,9 +39,9 @@ const Payment = () => {
   };
 
   return (
-    <div>
-      <h3>
-        Please Pay {parcel.cost} for: {parcel.parcelName}
+    <div className="text-center mt-10 space-y-3">
+      <h3 className="text-gray-600">
+        Please Pay {parcel.cost} for: <span className="text-green-600">{parcel.parcelName}</span>
       </h3>
       <button onClick={handlePayment} className="btn btn-warning">
         Pay
