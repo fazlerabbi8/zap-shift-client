@@ -1,5 +1,5 @@
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
@@ -12,6 +12,7 @@ const SendParcel = () => {
   } = useForm();
 
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const servicesCenters = useLoaderData();
   const regionsDuplicate = servicesCenters.map((c) => c.region);
   const regions = [...new Set(regionsDuplicate)];
@@ -65,7 +66,15 @@ const SendParcel = () => {
         axiosSecure
           .post("/parcels", data)
           .then((res) => {
-            console.log("after axios secure", res.data);
+            // console.log("after axios secure", res.data);
+            if (res.data.insertedId) {
+              navigate("/dashboard/my-parcels");
+              Swal.fire({
+                title: "Confirmed",
+                text: "Your parcel added successfully",
+                icon: "success",
+              });
+            }
           })
           .catch((err) => {
             console.error(
@@ -74,12 +83,6 @@ const SendParcel = () => {
               err.response?.data || err.message,
             );
           });
-
-      Swal.fire({
-        title: "Confirmed",
-        text: "Your parcel added successfully",
-        icon: "success",
-      });
     });
   };
 
