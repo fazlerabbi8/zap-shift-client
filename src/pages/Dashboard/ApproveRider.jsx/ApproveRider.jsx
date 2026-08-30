@@ -110,9 +110,9 @@ const ApproveRider = () => {
                   >
                     <RxCross1 />
                   </button>
-                  {/* <button onClick={() => handleDelete(rider._id)} className="btn">
+                  <button onClick={() => handleDelete(rider._id)} className="btn">
                     <FaTrash />
-                  </button> */}
+                  </button>
                 </td>
               </tr>
             ))}
