@@ -15,9 +15,9 @@ const ApproveRider = () => {
     },
   });
 
-  const handleUpdateStatus = (id, status) => {
-    const updateInfo = { status: status };
-    axiosSecure.patch(`/riders/${id}`, updateInfo).then((res) => {
+  const handleUpdateStatus = (rider, status) => {
+    const updateInfo = { status: status, email: rider.email };
+    axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
         Swal.fire(`Your application has been ${status}.`);
@@ -25,9 +25,9 @@ const ApproveRider = () => {
     });
   };
 
-  const handleApproved = (id) => {
-    const updateInfo = { status: "approved" };
-    axiosSecure.patch(`/riders/${id}`, updateInfo).then((res) => {
+  const handleApproved = (rider) => {
+    const updateInfo = { status: "approved", email: rider.email }; 
+    axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
         Swal.fire("Your application is approved.");
@@ -35,8 +35,9 @@ const ApproveRider = () => {
     });
   };
 
-  const handleRejected = (id) => {
-    handleUpdateStatus(id, "Rejected");
+  
+  const handleRejected = (rider) => {
+    handleUpdateStatus(rider, "Rejected");
   };
 
   const handleDelete = (id) => {
@@ -52,7 +53,7 @@ const ApproveRider = () => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/riders/${id}`).then((res) => {
           if (res.data.deletedCount) {
-            refetch()
+            refetch();
             Swal.fire("Deleted!", "The rider has been removed.", "success");
           }
         });
@@ -98,19 +99,16 @@ const ApproveRider = () => {
                 </td>
                 <td>{rider.district}</td>
                 <td className="space-x-2">
-                  <button
-                    onClick={() => handleApproved(rider._id)}
-                    className="btn"
-                  >
+                  <button onClick={() => handleApproved(rider)} className="btn">
                     <FaCheck />
                   </button>
-                  <button
-                    onClick={() => handleRejected(rider._id)}
-                    className="btn"
-                  >
+                  <button onClick={() => handleRejected(rider)} className="btn">
                     <RxCross1 />
                   </button>
-                  <button onClick={() => handleDelete(rider._id)} className="btn">
+                  <button
+                    onClick={() => handleDelete(rider._id)}
+                    className="btn"
+                  >
                     <FaTrash />
                   </button>
                 </td>
