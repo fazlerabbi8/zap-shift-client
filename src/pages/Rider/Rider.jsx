@@ -56,7 +56,7 @@ const Rider = () => {
 
     axiosSecure.post("/riders", data).then((res) => {
       if (res.data.insertedId) {
-        Swal.fire("Your application submitted successfully.we will reachout to you within 7 days");
+        Swal.fire("Your application submitted successfully.we will reachout to you within 7 days.");
       }
     });
   };
@@ -269,7 +269,7 @@ const Rider = () => {
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </form>
-        </div>
+        </div> 
       </div>
     </div>
   );
