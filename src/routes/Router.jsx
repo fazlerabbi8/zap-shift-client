@@ -44,6 +44,7 @@ const router = createBrowserRouter([
             <Rider />
           </PrivateRoute>
         ),
+        loader: () => fetch("serviceCenter.json").then((res) => res.json()),
       },
     ],
   },
