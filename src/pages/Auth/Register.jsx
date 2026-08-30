@@ -3,10 +3,12 @@ import useAuth from "../../Hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import GoogleLogin from "./GoogleLogin";
 import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   const {
@@ -40,12 +42,13 @@ const Register = () => {
       // 4. Create Firebase user
       const result = await registerUser(data.email, data.password);
 
+
       await updateUserProfile({
         displayName: data.name,
         photoURL: imageUrl,
       });
 
-      navigate(location?.state || "/");
+      
 
       // console.log("Registration successful");
       // console.log("Firebase user:", result.user);
@@ -58,7 +61,12 @@ const Register = () => {
         photoURL: imageUrl,
       };
 
-      console.log("User info:", userInfo);
+      const response = await axiosSecure.post('/users', userInfo);
+
+      console.log(response.data);
+
+      navigate(location?.state || "/");
+
     } catch (error) {
       console.log("Registration error:", error.response?.data || error.message);
     }

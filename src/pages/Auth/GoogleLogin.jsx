@@ -1,15 +1,31 @@
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const GoogleLogin = () => {
     const {googleLogin} =  useAuth();
     const location = useLocation()
+    const axiosSecure = useAxiosSecure();
+
     const navigate = useNavigate();
     const handleGoogleSignIn = () => {
         googleLogin()
         .then(result =>{
             console.log(result.user)
-             navigate(location?.state || "/");
+
+            const userInfo = {
+              name: result.user.displayName,
+              email:result.user.email,
+              photoURL: result.user.photoURL,
+            }
+
+            axiosSecure.post('/users', userInfo)
+            .then(res => {
+              console.log('user data has been stored.', res.data)
+              navigate(location?.state || "/");
+            })
+            
+             
         })
         .catch(err =>{
             console.log(err.message)
