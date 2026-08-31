@@ -2,16 +2,40 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FiShieldOff } from "react-icons/fi";
 import { FaUserShield } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users = [] } = useQuery({
+  const {refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
+
+
+  const handleMakeAdmin = user =>{
+    const roleInfo = {role: 'admin'};
+    axiosSecure.patch(`/users/${user._id}`, roleInfo)
+    .then(res => {
+      if(res.data.modifiedCount){
+        refetch();
+        Swal.fire(`${user.name} marked as an admin.`)
+      }
+    })
+  }
+  const handleRemoveAdmin = user =>{
+    const roleInfo = {role: 'user'};
+    axiosSecure.patch(`/users/${user._id}`, roleInfo)
+    .then(res => {
+      if(res.data.modifiedCount){
+        refetch();
+        Swal.fire(`${user.name} marked as an admin.`)
+      }
+    })
+  }
+
   return (
     <div className="p-5">
       <h3 className="text-4xl font-semibold">All Users: {users.length}</h3>
@@ -54,11 +78,12 @@ const UsersManagement = () => {
                 <td className="font-semibold">{user.role}</td>
                 <th>
                   {user.role === "admin" ? (
-                    <button className="btn">
+                    <button onClick={() => handleRemoveAdmin(user)} className="btn btn-error">
                       <FiShieldOff />
                     </button>
                   ) : (
-                    <button className="btn">
+                    <button onClick={() => handleMakeAdmin(user)}
+                    className="btn btn-success">
                       <FaUserShield />
                     </button>
                   )}
