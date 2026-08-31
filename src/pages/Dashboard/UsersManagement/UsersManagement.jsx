@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
-  const {refetch, data: users = [] } = useQuery({
+  const { refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
@@ -14,27 +14,47 @@ const UsersManagement = () => {
     },
   });
 
+  const handleMakeAdmin = (user) => {
+    const roleInfo = { role: "admin" };
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed)
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
+          if (res.data.modifiedCount) {
+            refetch();
+            Swal.fire(`${user.name} marked as an admin.`);
+          }
+        });
+    });
+  };
 
-  const handleMakeAdmin = user =>{
-    const roleInfo = {role: 'admin'};
-    axiosSecure.patch(`/users/${user._id}`, roleInfo)
-    .then(res => {
-      if(res.data.modifiedCount){
-        refetch();
-        Swal.fire(`${user.name} marked as an admin.`)
-      }
-    })
-  }
-  const handleRemoveAdmin = user =>{
-    const roleInfo = {role: 'user'};
-    axiosSecure.patch(`/users/${user._id}`, roleInfo)
-    .then(res => {
-      if(res.data.modifiedCount){
-        refetch();
-        Swal.fire(`${user.name} marked as an admin.`)
-      }
-    })
-  }
+  const handleRemoveAdmin = (user) => {
+    const roleInfo = { role: "user" };
+     Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed)
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
+          if (res.data.modifiedCount) {
+            refetch();
+            Swal.fire(`${user.name} remove an admin.`);
+          }
+        });
+    });
+  };
 
   return (
     <div className="p-5">
@@ -78,12 +98,17 @@ const UsersManagement = () => {
                 <td className="font-semibold">{user.role}</td>
                 <th>
                   {user.role === "admin" ? (
-                    <button onClick={() => handleRemoveAdmin(user)} className="btn btn-error">
+                    <button
+                      onClick={() => handleRemoveAdmin(user)}
+                      className="btn btn-error"
+                    >
                       <FiShieldOff />
                     </button>
                   ) : (
-                    <button onClick={() => handleMakeAdmin(user)}
-                    className="btn btn-success">
+                    <button
+                      onClick={() => handleMakeAdmin(user)}
+                      className="btn btn-success"
+                    >
                       <FaUserShield />
                     </button>
                   )}
