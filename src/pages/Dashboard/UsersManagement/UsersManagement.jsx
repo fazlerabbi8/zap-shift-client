@@ -3,13 +3,15 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FiShieldOff } from "react-icons/fi";
 import { FaUserShield } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
+  const [searchText, setSearchText] = useState('');
   const { refetch, data: users = [] } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", searchText],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get(`/users?searchText=${searchText}`);
       return res.data;
     },
   });
@@ -37,7 +39,7 @@ const UsersManagement = () => {
 
   const handleRemoveAdmin = (user) => {
     const roleInfo = { role: "user" };
-     Swal.fire({
+    Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -59,6 +61,11 @@ const UsersManagement = () => {
   return (
     <div className="p-5">
       <h3 className="text-4xl font-semibold">All Users: {users.length}</h3>
+
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Search User</legend>
+        <input onChange={(e) => setSearchText(e.target.value)} value={searchText} type="text" className="input" placeholder="Search User" />
+      </fieldset>
 
       {/* users table */}
       <div className="overflow-x-auto">
