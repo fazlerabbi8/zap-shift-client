@@ -3,6 +3,7 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { MdDirectionsBike, MdOutlinePayments } from "react-icons/md";
 import useRole from "../Hooks/useRole";
 import { FaUsers } from "react-icons/fa";
+import { RiEBike2Fill } from "react-icons/ri";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -92,6 +93,18 @@ const DashboardLayout = () => {
                     <MdDirectionsBike />
                     <span className="is-drawer-close:hidden">
                       Approve Rider
+                    </span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Riders"
+                    to={"/dashboard/assign-rider"}
+                  >
+                    <RiEBike2Fill />
+                    <span className="is-drawer-close:hidden">
+                      Assign Riders
                     </span>
                   </NavLink>
                 </li>

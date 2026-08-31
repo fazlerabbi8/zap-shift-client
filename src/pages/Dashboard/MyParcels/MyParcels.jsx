@@ -46,7 +46,7 @@ const MyParcels = () => {
   };
   return (
     <div>
-      <h3>All of my parcels: {parcels.length}</h3>
+      <h3>All of parcels: {parcels.length}</h3>
 
       <div className="overflow-x-auto">
         <table className="table table-zebra">
@@ -58,6 +58,7 @@ const MyParcels = () => {
               <th>Cost</th>
               <th>Payment</th>
               <th>Delivery Status</th>
+              <th>TrackingId</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -73,7 +74,8 @@ const MyParcels = () => {
                         parcel.paymentStatus === 'paid' ? <span className="btn btn-outline btn-success btn-sm">Paid</span> : <Link to={`/dashboard/payment/${parcel._id}`} className="btn btn-outline btn-warning btn-sm">Pay</Link>
                     }
                 </td>
-                <td>{parcel.deliveryStatus}</td>
+                <td className="text-error">{parcel.penddingStatus}</td>
+                <td className="text-error">{parcel.trackingId}</td>
                 <td className="space-x-2">
                   <button className="btn btn-square">
                     <FaMagnifyingGlass />

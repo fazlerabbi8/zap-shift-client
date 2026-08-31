@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaCheck, FaTrash } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
@@ -26,7 +26,7 @@ const ApproveRider = () => {
   };
 
   const handleApproved = (rider) => {
-    const updateInfo = { status: "approved", email: rider.email }; 
+    const updateInfo = { status: "approved", email: rider.email };
     axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
@@ -35,7 +35,6 @@ const ApproveRider = () => {
     });
   };
 
-  
   const handleRejected = (rider) => {
     handleUpdateStatus(rider, "Rejected");
   };
@@ -75,6 +74,7 @@ const ApproveRider = () => {
               <th>Name</th>
               <th>email</th>
               <th>Status</th>
+              <th>Work Status</th>
               <th>District</th>
               <th>Actions</th>
             </tr>
@@ -96,6 +96,13 @@ const ApproveRider = () => {
                   >
                     {rider.status}
                   </span>
+                </td>
+                <td>
+                  {rider.status === "approved" && rider.workStatus && (
+                    <span className="badge badge-success text-white">
+                      {rider.workStatus}
+                    </span>
+                  )}
                 </td>
                 <td>{rider.district}</td>
                 <td className="space-x-2">
