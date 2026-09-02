@@ -19,6 +19,7 @@ import UsersManagement from "../pages/Dashboard/UsersManagement/UsersManagement"
 import AdminRoute from "../AdminRote/AdminRoute";
 import AssignRiders from "../pages/Dashboard/AssignRiders/AssignRiders";
 import AssignedDelivaries from "../pages/Dashboard/AssignedDelivaries/AssignedDelivaries";
+import RiderRoute from "../RiderRoute/RiderRoute";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -97,7 +98,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'assigned-delivaries',
-        element: <AssignedDelivaries></AssignedDelivaries>
+        element: <RiderRoute><AssignedDelivaries></AssignedDelivaries></RiderRoute>
       },
       {
         path: 'approve-rider',
