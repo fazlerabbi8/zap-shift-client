@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { MdDirectionsBike, MdOutlinePayments } from "react-icons/md";
 import useRole from "../Hooks/useRole";
-import { FaUsers } from "react-icons/fa";
+import { FaTasks, FaUsers } from "react-icons/fa";
 import { RiEBike2Fill } from "react-icons/ri";
 
 const DashboardLayout = () => {
@@ -82,7 +82,27 @@ const DashboardLayout = () => {
 
             {/* our dashboard links */}
 
-            {role === "admin" &&
+            {/* for rider */}
+
+            {role === "rider" && (
+              <>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assigned Delivaries"
+                    to={"/dashboard/assigned-delivaries"}
+                  >
+                    <FaTasks />
+                    <span className="is-drawer-close:hidden">
+                      Assigned Delivaries
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* for admin */}
+            {role === "admin" && (
               <>
                 <li>
                   <NavLink
@@ -121,7 +141,7 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
               </>
-            }
+            )}
             <li>
               <NavLink
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
