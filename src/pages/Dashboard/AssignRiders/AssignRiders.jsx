@@ -49,7 +49,7 @@ const AssignRiders = () => {
       .then((res) => {
         if (res.data.modifiedCount) {
           riderModalRef.current?.close();
-
+          refetch()
           Swal.fire({
             title: "Success!",
             text: "Rider has been assigned.",
