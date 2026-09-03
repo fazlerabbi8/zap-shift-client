@@ -16,7 +16,7 @@ const AssignedDelivaries = () => {
   });
 
   const handleStatusUpdate = (parcel, status) => {
-    const statusInfo = { penddingStatus: status, riderId: parcel.riderId };
+    const statusInfo = { penddingStatus: status, riderId: parcel.riderId, trackingId: parcel.trackingId };
     axiosSecure
       .patch(`/parcels/${parcel._id}/status`, statusInfo)
       .then((res) => {
