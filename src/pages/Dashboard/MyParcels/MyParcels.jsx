@@ -32,7 +32,6 @@ const MyParcels = () => {
       if (result.isConfirmed)
         axiosSecure.delete(`/parcels/${id}`).then((res) => {
           if (res.data.deletedCount) {
-
             refetch();
 
             Swal.fire({
@@ -70,12 +69,23 @@ const MyParcels = () => {
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
                 <td>
-                    {
-                        parcel.paymentStatus === 'paid' ? <span className="btn btn-outline btn-success btn-sm">Paid</span> : <Link to={`/dashboard/payment/${parcel._id}`} className="btn btn-outline btn-warning btn-sm">Pay</Link>
-                    }
+                  {parcel.paymentStatus === "paid" ? (
+                    <span className="btn btn-outline btn-success btn-sm">
+                      Paid
+                    </span>
+                  ) : (
+                    <Link
+                      to={`/dashboard/payment/${parcel._id}`}
+                      className="btn btn-outline btn-warning btn-sm"
+                    >
+                      Pay
+                    </Link>
+                  )}
                 </td>
                 <td className="text-error">{parcel.penddingStatus}</td>
-                <td className="text-error">{parcel.trackingId}</td>
+                <td className="text-error">
+                  <Link to={`/parcel-track/${parcel.trackingId}`}>{parcel.trackingId}</Link>
+                </td>
                 <td className="space-x-2">
                   <button className="btn btn-square">
                     <FaMagnifyingGlass />
