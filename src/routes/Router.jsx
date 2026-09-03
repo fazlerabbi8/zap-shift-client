@@ -20,6 +20,7 @@ import AdminRoute from "../AdminRote/AdminRoute";
 import AssignRiders from "../pages/Dashboard/AssignRiders/AssignRiders";
 import AssignedDelivaries from "../pages/Dashboard/AssignedDelivaries/AssignedDelivaries";
 import RiderRoute from "../RiderRoute/RiderRoute";
+import CompletedDelicaries from "../pages/Dashboard/CompletedDelicaries/CompletedDelicaries";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
       {
         path: 'assigned-delivaries',
         element: <RiderRoute><AssignedDelivaries></AssignedDelivaries></RiderRoute>
+      },
+      {
+        path: 'completed-delivaries',
+        element: <RiderRoute><CompletedDelicaries></CompletedDelicaries></RiderRoute>
       },
       {
         path: 'approve-rider',
